@@ -1,0 +1,27 @@
+{
+    "name": "rachaai-whatsapp-microservice",
+    "version": "1.0.0",
+    "description": "WhatsApp messaging microservice for RachaAI using Baileys",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node --watch index.js"
+    },
+    "keywords": [
+        "whatsapp",
+        "baileys",
+        "microservice",
+        "rachaai"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@whiskeysockets/baileys": "^6.7.8",
+        "@supabase/supabase-js": "^2.39.3",
+        "express": "^4.18.2",
+        "pino": "^8.19.0",
+        "qrcode-terminal": "^0.12.0",
+        "dotenv": "^16.4.1"
+    }
+}
