@@ -117,26 +117,42 @@ async function connectToWhatsApp() {
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update;
 
+            // Log full update for debugging
+            logger.info('Connection update:', { connection, hasQR: !!qr });
+
             if (qr) {
                 logger.info('📱 QR Code generated - Scan with WhatsApp');
                 logger.info('QR Code:');
+                console.log('\n'); // Add spacing
                 qrcode.generate(qr, { small: true });
+                console.log('\n'); // Add spacing
                 logger.info('Scan the QR code above with WhatsApp');
             }
 
             if (connection === 'close') {
-                const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-                logger.warn('⚠️  Connection closed. Reconnecting:', shouldReconnect);
+                const statusCode = lastDisconnect?.error?.output?.statusCode;
+                const errorMessage = lastDisconnect?.error?.message;
+
+                logger.error('Connection closed:', {
+                    statusCode,
+                    errorMessage,
+                    shouldReconnect: statusCode !== DisconnectReason.loggedOut
+                });
+
+                const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
 
                 if (shouldReconnect) {
+                    logger.info('Reconnecting in 5 seconds...');
                     setTimeout(() => connectToWhatsApp(), 5000);
                 } else {
                     isConnected = false;
-                    logger.error('❌ Logged out. Please scan QR code again.');
+                    logger.error('❌ Logged out. Please restart and scan QR code again.');
                 }
             } else if (connection === 'open') {
                 isConnected = true;
                 logger.info('✅ WhatsApp connected successfully!');
+            } else if (connection === 'connecting') {
+                logger.info('🔄 Connecting to WhatsApp...');
             }
         });
 
