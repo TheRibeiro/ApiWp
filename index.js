@@ -106,7 +106,6 @@ async function connectToWhatsApp() {
         sock = makeWASocket({
             version,
             logger: pino({ level: 'silent' }), // Reduce noise
-            printQRInTerminal: true,
             auth: {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys, logger)
@@ -120,7 +119,9 @@ async function connectToWhatsApp() {
 
             if (qr) {
                 logger.info('📱 QR Code generated - Scan with WhatsApp');
+                logger.info('QR Code:');
                 qrcode.generate(qr, { small: true });
+                logger.info('Scan the QR code above with WhatsApp');
             }
 
             if (connection === 'close') {
