@@ -2,10 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import makeWASocket, {
     DisconnectReason,
-    useMultiFileAuthState,
     fetchLatestBaileysVersion,
-    makeCacheableSignalKeyStore,
-    makeInMemoryStore
+    makeCacheableSignalKeyStore
 } from '@whiskeysockets/baileys';
 import { createClient } from '@supabase/supabase-js';
 import pino from 'pino';
